@@ -1,26 +1,41 @@
-import useApp from "./App_hook";
+import useCounter from "./hooks/useCounter";
 
-const App = () => {
-  const { id, max, loading, nextHandler, previousHandler, user } = useApp();
+const CountController = ({ handleInc, handleDec, count }) => {
   return (
     <div>
-      <div>
-        <h1>User Details: {id}</h1>
-        {loading && <p>loading....</p>}
-        {!loading && user && (
-          <div>
-            <p>Name: {user.name}</p>
-            <p>Email: {user.email}</p>
-            <p>Phone: {user.phone}</p>
-          </div>
-        )}
-      </div>
-      <button disabled={id === 1} onClick={previousHandler}>
-        Previous
-      </button>
-      <button disabled={id === max} onClick={nextHandler}>
-        Next
-      </button>
+      <button onClick={handleDec}>-</button>
+      <span>{count}</span>
+      <button onClick={handleInc}>+</button>
+    </div>
+  );
+};
+
+const App = () => {
+  const {
+    counter: counter1,
+    handleCounterIncrement: handleInc1,
+    handleCounterDecrement: handleDec1,
+  } = useCounter({ initial: 1, min: 10, max: 25 });
+
+  const {
+    counter: counter2,
+    handleCounterIncrement: handleInc2,
+    handleCounterDecrement: handleDec2,
+  } = useCounter({ initial: 5, min: 1, max: 20 });
+
+  return (
+    <div style={{ width: "80%", margin: "0 auto" }}>
+      <h1>App</h1>
+      <CountController
+        count={counter1}
+        handleInc={handleInc1}
+        handleDec={handleDec1}
+      />
+      <CountController
+        count={counter2}
+        handleInc={handleInc2}
+        handleDec={handleDec2}
+      />
     </div>
   );
 };
